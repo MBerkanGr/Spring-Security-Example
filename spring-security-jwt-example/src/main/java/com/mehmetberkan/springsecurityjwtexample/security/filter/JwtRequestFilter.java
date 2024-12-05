@@ -1,6 +1,6 @@
 package com.mehmetberkan.springsecurityjwtexample.security.filter;
 
-import com.mehmetberkan.springsecurityjwtexample.security.auth.CustomUserDetailsService;
+import com.mehmetberkan.springsecurityjwtexample.security.service.CustomUserDetailsService;
 import com.mehmetberkan.springsecurityjwtexample.security.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

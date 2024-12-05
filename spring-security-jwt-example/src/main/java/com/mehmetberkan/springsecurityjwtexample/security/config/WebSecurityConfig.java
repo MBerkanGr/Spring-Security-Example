@@ -1,6 +1,8 @@
 package com.mehmetberkan.springsecurityjwtexample.security.config;
 
-import com.mehmetberkan.springsecurityjwtexample.security.auth.CustomUserDetailsService;
+import com.mehmetberkan.springsecurityjwtexample.security.handler.CustomAccessDeniedHandler;
+import com.mehmetberkan.springsecurityjwtexample.security.handler.CustomAuthenticationEntryPoint;
+import com.mehmetberkan.springsecurityjwtexample.security.service.CustomUserDetailsService;
 import com.mehmetberkan.springsecurityjwtexample.security.filter.JwtRequestFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +15,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -34,8 +38,13 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/authenticate", "/save").permitAll()
+                        .requestMatchers("/v1/dashboard/**").hasRole("USER")
+                        .requestMatchers("/v1/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(authenticationEntryPoint())
+                        .accessDeniedHandler(accessDeniedHandler()))
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -59,4 +68,13 @@ public class WebSecurityConfig {
         return authProvider;
     }
 
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new CustomAuthenticationEntryPoint();
+    }
 }

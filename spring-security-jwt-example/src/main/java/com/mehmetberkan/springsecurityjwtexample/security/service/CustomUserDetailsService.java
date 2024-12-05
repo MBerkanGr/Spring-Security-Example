@@ -1,4 +1,4 @@
-package com.mehmetberkan.springsecurityjwtexample.security.auth;
+package com.mehmetberkan.springsecurityjwtexample.security.service;
 
 import com.mehmetberkan.springsecurityjwtexample.model.User;
 import com.mehmetberkan.springsecurityjwtexample.repository.UserRepository;

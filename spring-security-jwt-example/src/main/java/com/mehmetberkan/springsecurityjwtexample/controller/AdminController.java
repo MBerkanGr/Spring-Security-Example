@@ -6,11 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1/dashboard")
-public class DashboardController {
-
+@RequestMapping("/v1/admin")
+public class AdminController {
     @GetMapping
-    public ResponseEntity<String> getDashboard() {
-        return ResponseEntity.ok("Dashboard Screen");
+    public ResponseEntity<String> getAdminDashboard() {
+        return ResponseEntity.ok("Admin Dashboard");
     }
 }
